@@ -1,13 +1,17 @@
 :root {
   color-scheme: light;
-  --bg: #FFFAFA;
-  --surface: #90D5FF;
-  --text: #14253b;
-  --muted: #01060f;
-  --primary: #484A6E;
-  --primary-soft: #e5efff;
-  --border: #484A6E;
-  --shadow: 0 18px 40px rgba(20, 36, 63, 0.08);
+  --bg: #EAF3FB;
+  --surface: #DCECF8;
+  --surface-strong: #F7FBFF;
+  --text: #14213D;
+  --muted: #2D4263;
+  --primary: #8CC3E3;
+  --primary-soft: rgba(140, 195, 227, 0.24);
+  --border: #8CC3E3;
+  --border-soft: rgba(140, 195, 227, 0.32);
+  --shadow: 0 20px 45px rgba(20, 33, 61, 0.08);
+  --neutral-bg: #EAF3FB;
+  --neutral-text: #14213D;
   font-family: 'Weekend', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
@@ -29,37 +33,39 @@ header {
 .brand { font-weight: 700; letter-spacing: -0.03em; font-size: 1.05rem; }
 .brand span { display: block; margin-top: 4px; font-size: 0.88rem; color: var(--muted); font-weight: 500; }
 nav { display: flex; gap: 18px; flex-wrap: wrap; }
-nav a { color: var(--muted); font-size: 0.94rem; font-weight: 600; transition: color 0.2s ease; }
+nav a { color: var(--neutral-text); font-size: 0.94rem; font-weight: 600; transition: color 0.2s ease; }
 nav a:hover { color: var(--primary); }
 .section { margin-top: 36px; }
-.section h1, .section h2, .section h3 { margin: 0 0 12px; letter-spacing: -0.02em; }
+.section h1, .section h2, .section h3 { margin: 0 0 12px; letter-spacing: -0.02em; color: var(--text); }
 .section p { margin: 0; max-width: 760px; color: var(--muted); line-height: 1.7; font-size: 1rem; }
 .eyebrow {
   display: inline-flex; align-items: center; border-radius: 999px; background: var(--primary-soft);
-  color: var(--primary); font-weight: 700; padding: 9px 14px; font-size: 0.85rem; letter-spacing: -0.01em;
+  color: var(--primary); font-weight: 700; padding: 9px 14px; font-size: 0.82rem; letter-spacing: 0.12em; text-transform: uppercase; font-family: 'IBM Plex Mono', monospace;
 }
 .card {
-  background: var(--surface); border: 1px solid var(--border); border-radius: 22px; padding: 22px;
+  background: var(--surface-strong); border: 1px solid var(--border-soft); border-top: 3px solid var(--primary); border-radius: 22px; padding: 22px;
   box-shadow: var(--shadow); margin-top: 20px;
 }
-.card h3 { margin: 0 0 8px; font-size: 1.05rem; }
+.card h3 { margin: 0 0 8px; font-size: 1.05rem; color: var(--text); }
 .card p { margin: 0; color: var(--muted); line-height: 1.7; font-size: 0.98rem; }
 .btn {
   border-radius: 999px; padding: 13px 22px; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; gap: 10px; transition: transform 0.18s ease, box-shadow 0.18s ease; margin-top: 16px;
 }
-.btn-primary { background: var(--primary); color: #fff; border: 1px solid transparent; }
-.btn:hover { transform: translateY(-1px); box-shadow: 0 14px 24px rgba(79, 122, 203, 0.16); }
+.btn-primary { background: var(--neutral-text); color: #fff; border: 1px solid transparent; }
+.btn-secondary { background: transparent; color: var(--neutral-text); border: 1px solid rgba(20, 33, 61, 0.28); }
+.btn:hover { transform: translateY(-1px); box-shadow: 0 14px 24px rgba(140, 195, 227, 0.22); }
 .list { margin: 10px 0 0 18px; padding: 0; color: var(--muted); line-height: 1.8; }
 .citation { margin-top: 8px; font-size: 0.84rem; color: var(--primary); }
 .citation a { color: var(--primary); font-weight: 600; }
 .gallery-grid {
   display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin-top: 20px;
 }
-.gallery-card { border-radius: 20px; overflow: hidden; min-height: 188px; background: #edf4ff; border: 1px solid var(--border); box-shadow: var(--shadow); }
+.gallery-card { border-radius: 20px; overflow: hidden; min-height: 188px; background: #edf4ff; border: 1px solid var(--border-soft); box-shadow: var(--shadow); }
 .gallery-card img { width: 100%; height: 100%; object-fit: cover; }
-.footer { margin-top: 38px; padding-top: 24px; border-top: 1px solid var(--border); color: var(--muted); }
+.footer { margin-top: 38px; padding-top: 24px; border-top: 1px solid rgba(20, 33, 61, 0.16); color: var(--neutral-text); background: var(--neutral-bg); border-radius: 24px 24px 0 0; padding: 24px 22px; }
 .footer-grid { display: grid; grid-template-columns: 1.2fr 0.9fr 0.9fr; gap: 18px; }
-.footer h3 { margin: 0 0 10px; font-size: 1rem; color: var(--text); }
+.footer h3 { margin: 0 0 10px; font-size: 1rem; color: var(--neutral-text); }
+.footer a { color: var(--neutral-text); }
 @media (max-width: 920px) {
   .gallery-grid, .footer-grid { grid-template-columns: 1fr; }
 }
