@@ -1,7 +1,8 @@
 const GA_MEASUREMENT_ID = 'G-RQLTBCHD7K';
-const EMAILJS_PUBLIC_KEY = 'YOUR_PUBLIC_KEY';
-const EMAILJS_SERVICE_ID = 'service_hq6wnc5';
-const EMAILJS_TEMPLATE_ID = 'KuO37tT32zhjcAtqT';
+const EMAILJS_CONFIG = window.LGA_EMAILJS_CONFIG || {};
+const EMAILJS_PUBLIC_KEY = (window.EMAILJS_PUBLIC_KEY || EMAILJS_CONFIG.publicKey || 'KuO37tT32zhjcAtqT').trim();
+const EMAILJS_SERVICE_ID = (window.EMAILJS_SERVICE_ID || EMAILJS_CONFIG.serviceId || 'service_hq6wnc5').trim();
+const EMAILJS_TEMPLATE_ID = (window.EMAILJS_TEMPLATE_ID || EMAILJS_CONFIG.templateId || 'template_c280h0u').trim();
 
 window.dataLayer = window.dataLayer || [];
 function gtag() {
@@ -70,6 +71,24 @@ function setFormStatus(message, type = 'success') {
   status.className = `form-status ${type}`;
 }
 
+function showSubmittedState() {
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('submitted') === '1') {
+    setFormStatus('Thanks — your message was received and the auto-reply is on the way.', 'success');
+  }
+}
+
+function isEmailJsConfigured() {
+  return Boolean(
+    EMAILJS_PUBLIC_KEY &&
+    EMAILJS_SERVICE_ID &&
+    EMAILJS_TEMPLATE_ID &&
+    !EMAILJS_PUBLIC_KEY.includes('YOUR_') &&
+    !EMAILJS_SERVICE_ID.includes('YOUR_') &&
+    !EMAILJS_TEMPLATE_ID.includes('YOUR_')
+  );
+}
+
 async function handleContactForm(event) {
   const form = document.getElementById('contactForm');
   const submitButton = document.getElementById('cf-submit');
@@ -86,40 +105,47 @@ async function handleContactForm(event) {
   trackEvent('contact_form_submit', { contact_email: email });
 
   try {
-    const formData = new FormData(form);
-    const payload = new URLSearchParams(formData).toString();
-
-    const response = await fetch('/', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: payload
-    });
-
-    if (!response.ok) {
-      throw new Error('Netlify form submission failed');
+    if (!isEmailJsConfigured()) {
+      throw new Error('EmailJS values are not configured yet. Add your public key, service ID, and template ID.');
     }
 
-    const emailReady = EMAILJS_PUBLIC_KEY !== 'YOUR_PUBLIC_KEY' && EMAILJS_SERVICE_ID !== 'YOUR_SERVICE_ID' && EMAILJS_TEMPLATE_ID !== 'YOUR_TEMPLATE_ID';
+    if (!window.emailjs) {
+      throw new Error('EmailJS SDK did not load.');
+    }
 
-    if (!emailReady) {
-      setFormStatus('Thanks, we got your message. Add your EmailJS credentials to enable the instant auto-reply.', 'success');
-    } else {
-      if (!window.emailjs) {
-        throw new Error('EmailJS SDK not loaded');
-      }
-      emailjs.init(EMAILJS_PUBLIC_KEY);
+    try {
       await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
         name,
         email,
-        message
-      });
+        message,
+        from_name: name,
+        from_email: email,
+        reply_to: email,
+        user_name: name,
+        user_email: email,
+        user_message: message,
+        subject: 'New contact form submission'
+      }, EMAILJS_PUBLIC_KEY);
+
       setFormStatus('Thanks, we got your message and your auto-reply is on the way.', 'success');
+    } catch (emailError) {
+      console.error('EmailJS send failed:', emailError);
+      setFormStatus('Your message was captured, but the auto-reply could not be sent. Please contact us directly.', 'error');
     }
 
+    const successUrl = new URL(window.location.href);
+    successUrl.searchParams.set('submitted', '1');
+    successUrl.hash = 'contact';
+    window.history.replaceState({}, '', successUrl.toString());
+
     form.reset();
+    window.setTimeout(() => {
+      form.submit();
+    }, 250);
   } catch (error) {
     console.error('Form submission failed:', error);
-    setFormStatus('Sorry, something went wrong. Please try again later.', 'error');
+    const detail = error?.text || error?.message || error?.statusText || String(error) || 'Please try again later.';
+    setFormStatus(`Sorry, something went wrong: ${detail}`, 'error');
   } finally {
     submitButton.disabled = false;
     submitButton.textContent = 'Send message';
@@ -138,5 +164,6 @@ document.addEventListener('DOMContentLoaded', () => {
   setupMobileMenu();
   setupAnchorTracking();
   setupContactForm();
+  showSubmittedState();
   trackEvent('page_view');
 });
