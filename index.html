@@ -186,6 +186,17 @@
   .contact-item{background:rgba(255,255,255,.06); border-radius:14px; padding:18px 20px;}
   .contact-item span{display:block; font-size:12.5px; color:var(--gold); font-weight:700; text-transform:uppercase; letter-spacing:.06em; margin-bottom:4px;}
   .contact-item strong{color:#fff; font-weight:600; font-size:15px;}
+  .form-card{background:var(--cream-2); border:1px solid var(--line); border-radius:var(--radius); padding:30px; max-width:640px; margin-top:28px;}
+  .contact-form{display:grid; gap:16px;}
+  .form-row{display:grid; gap:8px;}
+  .form-row label{font-weight:600; color:var(--ink); font-size:14px;}
+  .form-row input, .form-row textarea{width:100%; border:1px solid var(--line); border-radius:14px; padding:14px 16px; font:inherit; color:var(--ink); background:#fff; resize:vertical;}
+  .form-row input:focus, .form-row textarea:focus{outline:none; border-color:var(--gold-dark); box-shadow:0 0 0 3px rgba(131,181,221,.18);}
+  .form-status{min-height:24px; margin-top:4px; font-size:14px; font-weight:600;}
+  .form-status.success{color:#216c3a;}
+  .form-status.error{color:#b33a3a;}
+  .form-status.info{color:var(--gold-dark);}
+  .btn:disabled{opacity:0.7; cursor:not-allowed; transform:none;}
   @media(max-width:860px){ .cta-band{grid-template-columns:1fr; padding:40px 24px;} }
 
   footer{background:var(--dark); color:rgba(255,255,255,.75); margin-top:40px; padding-top:70px;}
@@ -236,7 +247,7 @@
 
 <div class="hero">
   <div class="hero-inner">
-    <img src="https://legalguardianangelsofficial.netlify.app/gallery/1762361228335.jpeg" alt="Students at a community event">
+    <img src="gallery/1762361228335.jpeg" alt="Students at a community event">
     <div class="hero-content">
       <div class="eyebrow">Community, care, and support</div>
       <h1>Empowering foster youth through mentorship, advocacy, and campus service.</h1>
@@ -274,7 +285,7 @@
 <section id="mission">
   <div class="wrap">
     <div class="quote-banner">
-      <img src="https://legalguardianangelsofficial.netlify.app/gallery/1762362089334.jpeg" alt="Volunteer group working together">
+      <img src="gallery/1762362089334.jpeg" alt="Volunteer group working together">
       <div class="quote-inner">
         <p>"Legal Guardian Angels has given me the opportunity to turn my passion for supporting foster youth into meaningful action within our community. As Director of Philanthropy, I'm proud to help create partnerships and experiences that remind youth in foster care that they are seen, valued, and supported."</p>
         <span>— Rylie Blume, Director of Philanthropy</span>
@@ -351,7 +362,7 @@
 
 <section id="statistics">
   <div class="wrap numbers-grid">
-    <img src="/Users/ryblume/Downloads/lga-deploy/gallery/vdaycards.jpeg" alt="Students preparing Valentine's Day cards for foster youth">
+    <img src="gallery/vdaycards.jpeg" alt="Students preparing Valentine's Day cards for foster youth">
     <div class="numbers-right">
       <div class="eyebrow">The numbers</div>
       <h2>The numbers are important — and this is why our mission matters.</h2>
@@ -414,9 +425,9 @@
       <p>Browse a selection of LGA events, volunteer moments, and community outreach.</p>
     </div>
     <div class="gallery-grid">
-      <img src="https://legalguardianangelsofficial.netlify.app/gallery/1762361228335.jpeg" alt="Students at a community event">
-      <img src="https://legalguardianangelsofficial.netlify.app/gallery/1762362089334.jpeg" alt="Volunteer group working together">
-      <img src="https://legalguardianangelsofficial.netlify.app/gallery/1762362348416.jpeg" alt="Campus student leaders">
+      <img src="gallery/1762361228335.jpeg" alt="Students at a community event">
+      <img src="gallery/1762362089334.jpeg" alt="Volunteer group working together">
+      <img src="gallery/1762362348416.jpeg" alt="Campus student leaders">
     </div>
     <div style="margin-top:30px;">
       <a href="https://join.photocircleapp.com/THJKW5EP27" class="btn btn-outline">View More Photos</a>
@@ -438,6 +449,34 @@
         <div class="contact-item"><span>Instagram</span><strong>@legalguardianangels</strong></div>
         <div class="contact-item"><span>Location</span><strong>University of Maryland, College Park</strong></div>
       </div>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="form-card">
+      <h3 style="font-size:19px; margin-bottom:6px;">Send us a message</h3>
+      <p style="color:var(--ink-soft); font-size:14.5px; margin-bottom:16px;">We’ll get back to you soon — and your message will also be captured by Netlify.</p>
+
+      <form id="contactForm" name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" class="contact-form">
+        <input type="hidden" name="form-name" value="contact">
+        <input type="hidden" name="bot-field">
+
+        <div class="form-row">
+          <label for="cf-name">Name</label>
+          <input type="text" id="cf-name" name="name" required>
+        </div>
+        <div class="form-row">
+          <label for="cf-email">Email</label>
+          <input type="email" id="cf-email" name="email" required>
+        </div>
+        <div class="form-row">
+          <label for="cf-message">Message</label>
+          <textarea id="cf-message" name="message" rows="4" required></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary" id="cf-submit">Send message</button>
+        <p id="cf-status" class="form-status" aria-live="polite"></p>
+      </form>
     </div>
   </div>
 </section>
