@@ -62,15 +62,32 @@
   .nav-shell{max-width:1180px; margin:24px auto 0; padding:0 24px;}
   .nav-bar{
     background:var(--dark); border-radius:999px;
-    display:flex; align-items:center; justify-content:space-between;
-    padding:14px 14px 14px 26px; color:#fff;
+    display:flex; align-items:center; justify-content:space-between; gap:16px;
+    padding:14px 14px 14px 26px; color:#fff; flex-wrap:nowrap;
   }
-  .logo{display:flex; align-items:center; gap:10px; font-family:'Poppins'; font-weight:700; font-size:17px;}
+  .logo{display:flex; align-items:center; gap:10px; font-family:'Poppins'; font-weight:700; font-size:17px; flex-shrink:0;}
   .logo-dot{width:10px; height:10px; border-radius:50%; background:var(--gold);}
-  .nav-links{display:flex; gap:30px; font-size:14.5px; font-weight:500;}
-  .nav-links a{opacity:.85; transition:opacity .15s;}
-  .nav-links a:hover{opacity:1;}
-  .nav-cta{display:flex; align-items:center; gap:14px;}
+  .nav-links{
+    display:flex; align-items:center; justify-content:center; gap:clamp(12px, 1.6vw, 28px);
+    font-size:14.5px; font-weight:500; flex:1; min-width:0; white-space:nowrap;
+    overflow-x:auto; scrollbar-width:none; -ms-overflow-style:none;
+  }
+  .nav-links::-webkit-scrollbar{display:none;}
+  .nav-links .nav-link, .nav-links .dropdown-toggle{position:relative; background:none; border:none; color:inherit; font:inherit; padding:0 2px 4px; cursor:pointer; opacity:.9; transition:opacity .15s ease, color .15s ease, font-weight .15s ease; flex-shrink:0; display:inline-flex; align-items:center; gap:6px;}
+  .nav-links .nav-link:hover, .nav-links .dropdown-toggle:hover{opacity:1;}
+  .nav-links .nav-link.active, .nav-links .dropdown-toggle.active, .mobile-menu a.active{color:#fff; opacity:1; font-weight:700;}
+  .nav-links .nav-link::before, .nav-links .dropdown-toggle::before{content:""; position:absolute; left:0; bottom:0; width:100%; height:2px; background:var(--gold); transform:scaleX(0); transform-origin:center; transition:transform .2s ease;}
+  .nav-links .nav-link.active::before, .nav-links .dropdown-toggle.active::before, .dropdown.open .dropdown-toggle::before{transform:scaleX(1);}
+  .nav-links .dropdown-toggle::after{content:"▾"; font-size:10px; line-height:1; transition:transform .2s ease;}
+  .nav-links .dropdown-toggle[aria-expanded="true"]::after, .dropdown.open .dropdown-toggle::after{transform:rotate(180deg);}
+  .nav-link-group{display:inline-flex; align-items:center; gap:4px;}
+  .nav-item{position:relative;}
+  .dropdown-menu{position:absolute; top:calc(100% + 10px); left:0; min-width:220px; background:var(--dark); color:#fff; border:1px solid rgba(255,255,255,.14); border-radius:16px; padding:8px; box-shadow:0 16px 34px rgba(0,0,0,.2); display:none; flex-direction:column; gap:4px; z-index:30;}
+  .dropdown-menu a{display:block; padding:10px 12px; border-radius:10px; color:#fff; opacity:1; text-align:left;}
+  .dropdown-menu a:hover{background:rgba(255,255,255,.12);}
+  .dropdown.open .dropdown-menu{display:flex;}
+  .dropdown.open .dropdown-toggle{color:#fff; font-weight:700;}
+  .nav-cta{display:flex; align-items:center; gap:14px; flex-shrink:0;}
   .burger{display:none; flex-direction:column; gap:4px; cursor:pointer; background:none; border:none; padding:8px;}
   .burger span{width:22px; height:2px; background:#fff; display:block;}
   @media(max-width:900px){
@@ -217,14 +234,30 @@
     <div class="nav-bar">
       <a href="index.html" class="logo"><span class="logo-dot"></span> Legal Guardian Angels</a>
       <nav class="nav-links">
-        <a href="index.html#about">About</a>
-        <a href="fundraising.html">Fundraising</a>
-        <a href="statistics.html">Statistics</a>
-        <a href="gallery.html">Gallery</a>
-        <a href="programs.html">Programs</a>
-        <a href="events.html">Events</a>
-        <a href="index.html#join">Get Involved</a>
-        <a href="index.html#contact">Contact</a>
+        <div class="nav-item dropdown">
+          <button class="nav-link dropdown-toggle" type="button" aria-expanded="false" aria-controls="who-we-are-menu">Who We Are</button>
+          <div class="dropdown-menu" id="who-we-are-menu">
+            <a href="index.html#mission">Our Mission</a>
+            <a href="index.html#events">Our Impact</a>
+            <a href="index.html#about">Team &amp; Leadership</a>
+            <a href="gallery.html">Photo Gallery</a>
+          </div>
+        </div>
+        <a href="get-involved.html" class="nav-link">Get Involved</a>
+        <div class="nav-item dropdown">
+          <a href="statistics.html" class="nav-link dropdown-toggle" data-parent="our-cause">Our Cause</a>
+          <div class="dropdown-menu" id="our-cause-menu">
+            <a href="partners.html">Our Partners</a>
+            <a href="testimonials.html">Partner Testimonials</a>
+          </div>
+        </div>
+        <div class="nav-item dropdown">
+          <button class="nav-link dropdown-toggle" type="button" aria-expanded="false" aria-controls="ways-to-support-menu">Ways to Support</button>
+          <div class="dropdown-menu" id="ways-to-support-menu">
+            <a href="https://www.spotfund.com/story/1d120779-6654-4a64-a59e-068f6ab8086c?SFID=EmpowerFosterYouth">Donate</a>
+            <a href="index.html#contact">Partnership Requests</a>
+          </div>
+        </div>
       </nav>
       <div class="nav-cta">
         <a href="https://www.spotfund.com/story/1d120779-6654-4a64-a59e-068f6ab8086c?SFID=EmpowerFosterYouth" class="btn btn-primary" style="padding:11px 24px; font-size:14px;">Donate now</a>
@@ -234,11 +267,16 @@
       </div>
     </div>
     <div class="mobile-menu" id="mmenu">
-      <a href="index.html#about">About</a>
-      <a href="programs.html">Programs</a>
-      <a href="events.html">Events</a>
-      <a href="index.html#join">Get Involved</a>
-      <a href="index.html#contact">Contact</a>
+      <a href="index.html#mission">Our Mission</a>
+      <a href="index.html#events">Our Impact</a>
+      <a href="index.html#about">Team &amp; Leadership</a>
+      <a href="gallery.html">Photo Gallery</a>
+      <a href="get-involved.html">Get Involved</a>
+      <a href="statistics.html">Our Cause</a>
+      <a href="partners.html">Our Partners</a>
+      <a href="testimonials.html">Partner Testimonials</a>
+      <a href="https://www.spotfund.com/story/1d120779-6654-4a64-a59e-068f6ab8086c?SFID=EmpowerFosterYouth">Donate</a>
+      <a href="index.html#contact">Partnership Requests</a>
     </div>
   </div>
 </header>
@@ -250,8 +288,8 @@
     <img src="gallery/1762361228335.jpeg" alt="Students at a community event">
     <div class="hero-content">
       <div class="eyebrow">Community, care, and support</div>
-      <h1>Empowering foster youth through mentorship, advocacy, and campus service.</h1>
-      <p>Legal Guardian Angels connects UMD students with foster youth who need guidance, support, and access to trusted resources.</p>
+      <h1>Empowering youth in foster care through mentorship, advocacy, and campus service.</h1>
+      <p>Legal Guardian Angels connects UMD students with youth in foster care who need guidance, support, and access to trusted resources.</p>
       <div class="hero-btns">
         <a href="index.html#join" class="btn btn-primary">Join the team</a>
         <a href="gallery.html" class="btn btn-outline-light">View photos</a>
@@ -271,7 +309,7 @@
       <h2>What we do</h2>
     </div>
     <div class="about-right">
-      <p>We offer mentorship, support, and community resources designed to help foster youth feel seen, supported, and prepared for the future.</p>
+      <p>We offer mentorship, support, and community resources designed to help youth in foster care feel seen, supported, and prepared for the future.</p>
       <p>Our work blends volunteer service, education, and advocacy in a way that is welcoming and meaningful for both students and the youth we serve.</p>
       <a href="index.html#mission" class="btn btn-outline">Our Mission</a>
       <div class="stat-row">
@@ -287,7 +325,7 @@
     <div class="quote-banner">
       <img src="gallery/1762362089334.jpeg" alt="Volunteer group working together">
       <div class="quote-inner">
-        <p>"Legal Guardian Angels has given me the opportunity to turn my passion for supporting foster youth into meaningful action within our community. As Director of Philanthropy, I'm proud to help create partnerships and experiences that remind youth in foster care that they are seen, valued, and supported."</p>
+        <p>"Legal Guardian Angels has given me the opportunity to turn my passion for supporting youth in foster care into meaningful action within our community. As Director of Philanthropy, I'm proud to help create partnerships and experiences that remind youth in foster care that they are seen, valued, and supported."</p>
         <span>— Rylie Blume, Director of Philanthropy</span>
       </div>
     </div>
@@ -299,7 +337,7 @@
     <div class="section-head">
       <div>
         <div class="eyebrow">Programs</div>
-        <h2>LGA believes strong education and stable support systems create better futures for foster youth.</h2>
+        <h2>LGA believes strong education and stable support systems create better futures for youth in foster care.</h2>
       </div>
       <p>We work to increase access to resources, improve legal understanding, and build a caring campus community.</p>
     </div>
@@ -307,13 +345,13 @@
       <div class="p-card">
         <div class="icon">01</div>
         <h3>Membership</h3>
-        <p>Each member receives education and support to effectively engage with foster youth and contribute to our mission. GBMs are also a great way to meet like-minded peers, build meaningful connections, and form lasting friendships.</p>
+        <p>Each member receives education and support to effectively engage with youth in foster care and contribute to our mission. GBMs are also a great way to meet like-minded peers, build meaningful connections, and form lasting friendships.</p>
         <a href="programs.html" class="btn btn-outline" style="align-self:flex-start;">Learn More</a>
       </div>
       <div class="p-card">
         <div class="icon">02</div>
         <h3>Volunteer opportunities</h3>
-        <p>Get involved by volunteering at events, supporting donation drives, assisting with fundraising and outreach, and partnering with organizations serving youth in foster care. Every contribution helps us support foster youth and strengthen our community.</p>
+        <p>Get involved by volunteering at events, supporting donation drives, assisting with fundraising and outreach, and partnering with organizations serving youth in foster care. Every contribution helps us support youth in foster and strengthen our community.</p>
         <a href="programs.html" class="btn btn-outline" style="align-self:flex-start;">Learn More</a>
       </div>
       <div class="p-card">
@@ -332,9 +370,9 @@
       <div class="section-head">
         <div>
           <div class="eyebrow" style="color:var(--dark);">Support our mission</div>
-          <h2>Our fundraising efforts help provide the resources, mentorship, and opportunities foster youth need to thrive.</h2>
+          <h2>Our fundraising efforts help provide the resources, mentorship, and opportunities youth in foster care need to thrive.</h2>
         </div>
-        <p>Every contribution helps Legal Guardian Angels expand our support for foster youth and create meaningful experiences that remind them they are seen, valued, and supported.</p>
+        <p>Every contribution helps Legal Guardian Angels expand our support for youth in foster care and create meaningful experiences that remind them they are seen, valued, and supported.</p>
       </div>
       <div class="impact-cards">
         <div class="i-card">
@@ -374,7 +412,7 @@
       </div>
       <div class="stat-block">
         <h4>Education & College Attendance</h4>
-        <p>Foster youth face significant barriers to higher education compared to their peers. Under 4% of former foster youth go on to earn a four-year college degree, and under 6% receive a two-year degree.</p>
+        <p>Youth in foster care face significant barriers to higher education compared to their peers. Under 4% of former foster youth go on to earn a four-year college degree, and under 6% receive a two-year degree.</p>
         <a href="https://nfyi.org/issues/higher-education/" target="_blank" rel="noopener">Source: National Foster Youth Institute</a>
       </div>
       <div class="stat-block">
@@ -441,7 +479,7 @@
       <div>
         <div class="eyebrow" style="color:var(--gold);">Contact</div>
         <h2>Where are we located?</h2>
-        <p>University of Maryland, College Park. Student-led nonprofit supporting foster youth through volunteer work and advocacy.</p>
+        <p>University of Maryland, College Park. Student-led nonprofit supporting youth in foster care through volunteer work and advocacy.</p>
         <a href="index.html#join" class="btn btn-primary">Get Involved</a>
       </div>
       <div class="contact-list">
@@ -457,7 +495,7 @@
       <h3 style="font-size:19px; margin-bottom:6px;">Send us a message</h3>
       <p style="color:var(--ink-soft); font-size:14.5px; margin-bottom:16px;">We’ll get back to you soon — and your message will also be captured by Netlify.</p>
 
-      <form id="contactForm" name="contact" action="/" method="POST" data-netlify="true" netlify-honeypot="bot-field" class="contact-form">
+      <form id="contactForm" name="contact" action="/thank-you.html" method="POST" data-netlify="true" netlify-honeypot="bot-field" class="contact-form">
         <input type="hidden" name="form-name" value="contact">
         <input type="hidden" name="bot-field">
 
@@ -486,7 +524,7 @@
     <div class="footer-grid">
       <div>
         <div class="footer-logo"><span class="logo-dot"></span> Legal Guardian Angels</div>
-        <p style="font-size:14px; max-width:280px;">Student-led nonprofit supporting foster youth through volunteer work and advocacy.</p>
+        <p style="font-size:14px; max-width:280px;">Student-led nonprofit supporting youth in foster care through volunteer work and advocacy.</p>
       </div>
       <div>
         <h4>Quick Links</h4>

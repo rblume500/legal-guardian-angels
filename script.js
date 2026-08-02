@@ -37,6 +37,18 @@ function setActiveNav() {
       link.classList.remove('active');
     }
   });
+
+  document.querySelectorAll('.nav-links .dropdown-toggle').forEach((toggle) => {
+    const href = toggle.getAttribute('href') || '';
+    if (!href || href.startsWith('#')) return;
+    const hrefPath = href.split('#')[0].split('?')[0];
+    const isHome = currentPath === 'index.html' && (hrefPath === 'index.html' || hrefPath === '');
+    if (hrefPath === currentPath || isHome) {
+      toggle.classList.add('active');
+    } else {
+      toggle.classList.remove('active');
+    }
+  });
 }
 
 function setupMobileMenu() {
@@ -48,6 +60,43 @@ function setupMobileMenu() {
       trackEvent('mobile_menu_toggle');
     });
   }
+}
+
+function setupDropdowns() {
+  const closeAllDropdowns = () => {
+    document.querySelectorAll('.dropdown.open').forEach((dropdown) => dropdown.classList.remove('open'));
+    document.querySelectorAll('.dropdown-toggle').forEach((toggle) => {
+      toggle.setAttribute('aria-expanded', 'false');
+    });
+  };
+
+  document.querySelectorAll('.dropdown').forEach((dropdown) => {
+    const toggle = dropdown.querySelector('.dropdown-toggle');
+    const menu = dropdown.querySelector('.dropdown-menu');
+    if (!toggle || !menu) return;
+
+    toggle.addEventListener('click', (event) => {
+      event.preventDefault();
+      const shouldOpen = !dropdown.classList.contains('open');
+      closeAllDropdowns();
+      if (shouldOpen) {
+        dropdown.classList.add('open');
+        toggle.setAttribute('aria-expanded', 'true');
+      }
+    });
+
+    menu.querySelectorAll('a').forEach((item) => {
+      item.addEventListener('click', () => {
+        closeAllDropdowns();
+      });
+    });
+  });
+
+  document.addEventListener('click', (event) => {
+    if (!event.target.closest('.dropdown')) {
+      closeAllDropdowns();
+    }
+  });
 }
 
 function setupAnchorTracking() {
@@ -89,6 +138,12 @@ function isEmailJsConfigured() {
   );
 }
 
+function isLocalEnvironment() {
+  const hostname = window.location.hostname;
+  const protocol = window.location.protocol;
+  return protocol === 'file:' || hostname === '127.0.0.1' || hostname === 'localhost';
+}
+
 async function handleContactForm(event) {
   const form = document.getElementById('contactForm');
   const submitButton = document.getElementById('cf-submit');
@@ -105,6 +160,15 @@ async function handleContactForm(event) {
   trackEvent('contact_form_submit', { contact_email: email });
 
   try {
+    if (isLocalEnvironment()) {
+      setFormStatus('Thanks — your message is ready to submit. Local preview will show the confirmation page after the form is accepted by the hosting service.', 'success');
+      form.reset();
+      window.setTimeout(() => {
+        window.location.href = '/thank-you.html';
+      }, 250);
+      return;
+    }
+
     if (!isEmailJsConfigured()) {
       throw new Error('EmailJS values are not configured yet. Add your public key, service ID, and template ID.');
     }
@@ -162,6 +226,7 @@ function setupContactForm() {
 document.addEventListener('DOMContentLoaded', () => {
   setActiveNav();
   setupMobileMenu();
+  setupDropdowns();
   setupAnchorTracking();
   setupContactForm();
   showSubmittedState();
