@@ -70,9 +70,8 @@
   .nav-links{
     display:flex; align-items:center; justify-content:center; gap:clamp(12px, 1.6vw, 28px);
     font-size:14.5px; font-weight:500; flex:1; min-width:0; white-space:nowrap;
-    overflow-x:auto; scrollbar-width:none; -ms-overflow-style:none;
+    overflow:visible;
   }
-  .nav-links::-webkit-scrollbar{display:none;}
   .nav-links .nav-link, .nav-links .dropdown-toggle{position:relative; background:none; border:none; color:inherit; font:inherit; padding:0 2px 4px; cursor:pointer; opacity:.9; transition:opacity .15s ease, color .15s ease, font-weight .15s ease; flex-shrink:0; display:inline-flex; align-items:center; gap:6px;}
   .nav-links .nav-link:hover, .nav-links .dropdown-toggle:hover{opacity:1;}
   .nav-links .nav-link.active, .nav-links .dropdown-toggle.active, .mobile-menu a.active{color:#fff; opacity:1; font-weight:700;}
@@ -107,33 +106,40 @@
   }
   .hero-inner{
     position:relative; border-radius:28px; overflow:hidden; min-height:640px;
-    display:flex; align-items:flex-end;
+    display:flex; align-items:center; justify-content:flex-end; padding:40px;
   }
   .hero-inner img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;}
   .hero-inner::after{
     content:""; position:absolute; inset:0;
     background:linear-gradient(0deg, rgba(20,18,10,.72) 5%, rgba(20,18,10,.15) 55%, rgba(20,18,10,0) 80%);
   }
-  .hero-content{position:relative; z-index:2; padding:48px; max-width:640px;}
-  .hero-content .eyebrow{color:var(--gold);}
-  .hero-content .eyebrow::before{background:var(--gold);}
-  .hero-content h1{color:#fff; font-size:44px; margin-bottom:16px;}
-  .hero-content p{color:rgba(255,255,255,.85); font-size:16px; max-width:480px; margin-bottom:28px;}
+  .hero-content{
+    position:relative; z-index:2; padding:38px; max-width:520px; width:min(100%, 520px);
+    background:rgba(251,248,241,.94); border:1px solid rgba(255,255,255,.52); border-radius:28px;
+    box-shadow:0 28px 64px rgba(20,18,10,.24); backdrop-filter:blur(8px);
+  }
+  .hero-content .eyebrow{color:var(--gold-dark);}
+  .hero-content .eyebrow::before{background:var(--gold-dark);}
+  .hero-content h1{color:var(--dark); font-size:48px; margin-bottom:16px;}
+  .hero-content p{color:var(--ink-soft); font-size:16px; max-width:460px; margin-bottom:28px;}
   .hero-btns{display:flex; gap:14px; flex-wrap:wrap; margin-bottom:34px;}
   .hero-stats{display:flex; gap:34px; flex-wrap:wrap;}
-  .hero-stats div{color:#fff;}
+  .hero-stats div{color:var(--dark); background:rgba(68,91,131,.08); border:1px solid rgba(68,91,131,.12); border-radius:16px; padding:14px 16px; min-width:150px;}
   .hero-stats strong{display:block; font-family:'Poppins'; font-size:20px;}
-  .hero-stats span{font-size:13px; color:rgba(255,255,255,.75);}
+  .hero-stats span{font-size:13px; color:var(--ink-soft);}
   @media(max-width:640px){
     .hero-inner{min-height:560px;}
     .hero-content{padding:28px;}
     .hero-content h1{font-size:32px;}
   }
 
-  .about-grid{display:grid; grid-template-columns:0.9fr 1.1fr; gap:60px; align-items:start;}
-  .about-grid h2{font-size:36px; margin-bottom:0;}
-  .about-right p{color:var(--ink-soft); font-size:16px; margin-bottom:22px;}
-  .stat-row{display:grid; grid-template-columns:repeat(2,1fr); gap:18px; margin-top:36px; max-width:420px;}
+  .about-grid{display:grid; grid-template-columns:1.08fr 0.92fr; gap:44px; align-items:stretch;}
+  .about-copy h2{font-size:36px; margin-bottom:18px;}
+  .about-copy p{color:var(--ink-soft); font-size:16px; margin-bottom:22px; max-width:560px;}
+  .about-panel{background:linear-gradient(180deg, var(--cream-2), #f3ede1); border:1px solid var(--line); border-radius:28px; padding:30px; box-shadow:0 18px 40px rgba(68,91,131,.08);}
+  .about-panel h3{font-size:24px; margin-bottom:10px; color:var(--dark);}
+  .about-panel p{color:var(--ink-soft); font-size:15px; margin-bottom:24px;}
+  .stat-row{display:grid; grid-template-columns:repeat(2,1fr); gap:18px; margin-top:0; max-width:none;}
   .stat-card{background:var(--cream-2); border:1px solid var(--line); border-radius:16px; padding:24px;}
   .stat-card strong{display:block; font-family:'Poppins'; font-size:28px; margin-bottom:4px;}
   .stat-card span{font-size:13.5px; color:var(--ink-soft);}
@@ -239,6 +245,7 @@
           <div class="dropdown-menu" id="who-we-are-menu">
             <a href="mission.html">Our Mission</a>
             <a href="impact.html">Our Impact</a>
+            <a href="events.html">Events</a>
             <a href="team-leadership.html">Team &amp; Leadership</a>
             <a href="gallery.html">Photo Gallery</a>
           </div>
@@ -269,6 +276,7 @@
     <div class="mobile-menu" id="mmenu">
       <a href="mission.html">Our Mission</a>
       <a href="impact.html">Our Impact</a>
+      <a href="events.html">Events</a>
       <a href="team-leadership.html">Team &amp; Leadership</a>
       <a href="gallery.html">Photo Gallery</a>
       <a href="get-involved.html">Get Involved</a>
@@ -292,7 +300,6 @@
       <p>Legal Guardian Angels connects UMD students with youth in foster care who need guidance, support, and access to trusted resources.</p>
       <div class="hero-btns">
         <a href="/#join" class="btn btn-primary">Join the team</a>
-        <a href="gallery.html" class="btn btn-outline-light">View photos</a>
       </div>
       <div class="hero-stats">
         <div><strong>50+</strong><span>active student members</span></div>
@@ -304,14 +311,17 @@
 
 <section id="about">
   <div class="wrap about-grid">
-    <div>
+    <div class="about-copy">
       <div class="eyebrow">About us</div>
       <h2>What we do</h2>
-    </div>
-    <div class="about-right">
-      <p>We offer mentorship, support, and community resources designed to help youth in foster care feel seen, supported, and prepared for the future.</p>
-      <p>Our work blends volunteer service, education, and advocacy in a way that is welcoming and meaningful for both students and the youth we serve.</p>
+      <p>We’re University of Maryland students working toward one goal: creating stability for youth in foster care. Children and teenagers entering, moving through, or exiting care face a level of adversity most will never have to consider.</p>
+      <p> Through hands-on service, philanthropy, and advocacy, we address their unique set of needs while investing in their long-term success. We know that consistent support systems, whether in areas like education, housing, or healthcare, is what changes outcomes.</p>
       <a href="/#mission" class="btn btn-outline">Our Mission</a>
+    </div>
+    <div class="about-panel">
+      <div class="eyebrow">How it comes together</div>
+      <h3>Support that feels personal, practical, and consistent.</h3>
+      <p>We pair mission-driven student leadership with real community action so youth in foster care are met with encouragement, resources, and long-term care.</p>
       <div class="stat-row">
         <div class="stat-card"><strong>50+</strong><span>Active student members</span></div>
         <div class="stat-card"><strong>2024</strong><span>Founded on campus</span></div>
@@ -393,32 +403,6 @@
       </div>
       <div style="margin-top:30px;">
         <a href="https://www.spotfund.com/story/1d120779-6654-4a64-a59e-068f6ab8086c?SFID=EmpowerFosterYouth" class="btn btn-dark">Donate now</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section id="statistics">
-  <div class="wrap numbers-grid">
-    <img src="gallery/vdaycards.jpeg" alt="Students preparing Valentine's Day cards for foster youth">
-    <div class="numbers-right">
-      <div class="eyebrow">The numbers</div>
-      <h2>The numbers are important — and this is why our mission matters.</h2>
-      <p>According to NCFA's 2024 report, over 70,000 youth are waiting for a permanent family. Youth often spend more than two years in foster care, and out of 176,730 youth who exited care, 15,379 aged out of the system without finding permanency.</p>
-      <div class="num-callout">
-        <div><strong>70,000+</strong><span>waiting for a permanent family</span></div>
-        <div><strong>176,730</strong><span>youth exited care</span></div>
-        <div><strong>15,379</strong><span>aged out without permanency</span></div>
-      </div>
-      <div class="stat-block">
-        <h4>Education & College Attendance</h4>
-        <p>Youth in foster care face significant barriers to higher education compared to their peers. Under 4% of former foster youth go on to earn a four-year college degree, and under 6% receive a two-year degree.</p>
-        <a href="https://nfyi.org/issues/higher-education/" target="_blank" rel="noopener">Source: National Foster Youth Institute</a>
-      </div>
-      <div class="stat-block">
-        <h4>Poverty's Impact on Foster Care</h4>
-        <p>Children living in poverty enter the foster care system at higher rates than children who are not in poverty. Poverty and neglect together have lasting negative effects on childhood development.</p>
-        <a href="https://www.sciencedirect.com/science/article/abs/pii/S0145213424003168" target="_blank" rel="noopener">Source: ScienceDirect</a>
       </div>
     </div>
   </div>
